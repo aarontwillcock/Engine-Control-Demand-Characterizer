@@ -17,8 +17,97 @@
 \section{Introduction}
 \subsection{Purpose}
 
+This software aims to:
+\begin{enumerate}
+    \item Define a simplified engine model (e.g., accel, speed parameters),
+    \item define a set of Adaptive Variable-Rate (AVR) tasks as proposed by
+    Biondi et al. \cite{biondi} (e.g., transition speeds, execution times),
+    \item combine the engine model and AVR task to form a real-time AVR-based
+    engine control model, hereafter AEM (AVR Engine Model),
+    \item calculate the maximum demand (see definition CITE)
+    a given AEM can generate, and
+    \item support result synthesis and visualization (e.g. defining experiment
+    classes and parameters, exporting test data into portable files, enabling 
+    comparing algorithm runtimes, etc.)
+\end{enumerate}
+
+The intended use is demand characterization for generated AEMs.
+In furtherance of this intended use, the software also aims to:
+\begin{enumerate}
+    \item enumerate multiple calculation options (e.g., different methods),
+    \item allow algorithm parallelization (where possible),
+    \item allow approximation (where possible).
+\end{enumerate}
+
 \subsection{Scope}
+
+The scope of this software includes three primary areas:
+\begin{enumerate}
+    \item model definition and generation,
+    \item algorithm implementation,
+    \item parallelization support, and
+    \item synthesis and data visualization.
+\end{enumerate}
+
+For model definition and generation, scope includes:
+\begin{enumerate}
+    \item enumeration of existing models and
+    \item randomized generation based on existing models.
+\end{enumerate}
+Excluded items include:
+\begin{enumerate}
+    \item creation of new engine models and
+    \item parameter extension beyond existing models.
+\end{enumerate}
+
+For algorithm implementation, scope includes:
+\begin{enumerate}
+    \item implementation of existing algorithms and
+    \item parameterization of algorithm variations where feasible
+    (e.g., parameterization of constants in existing research).
+\end{enumerate}
+
+Excluded items include:
+\begin{enumerate}
+    \item design and implementation of new algorithms and
+    \item approximation of algorithms no already specified.
+\end{enumerate}
+
+For parallelization support, scope includes:
+\begin{enumerate}
+    \item multi-threaded implementations of existing algorithms and
+    \item multi-core implementations of existing algorithms.
+\end{enumerate}
+
+Excluded items includes:
+\begin{enumerate}
+    \item design or implementation of new parallelization techniques and
+    \item scripting support for non-SLURM HPC grids.
+\end{enumerate}
+
+For synthesis and data visualization, scope includes:
+\begin{enumerate}
+    \item definition and implementation of experiment templates,
+    \item parameterization of experiment variables,
+    \item design and implementation of experiment test harness(es) for exporting
+    key performance indicators (e.g., demand calculated, runtime, RAM use, etc.)
+    , and
+    \item definition and use of common key performance data export format (e.g.,
+    CSV enumeration of key performance indicators).
+\end{enumerate}
 \subsection{Definitions, Acronyms, Abbreviations}
+
+\begin{itemize}
+    \item AVR - Adaptive Variable Rate - The Adaptive Variable Rate task model by
+    Biondi et al. CITE
+    \item HPC - High Performance Computing - High performance computing, usually a
+    grid, cluster, or collection of compute devices
+    \item ICE - Internal Combustion Engine - Heat engine using fuel combustion 
+    to cause high-temperature, high-pressure gas expansion for performing work
+    \item SI ICE - Spark Ignition ICE - Spark ignition ICE
+\end{itemize}
+
+
 \subsection{References}
 \subsection{Overview}
 \section{General Description}

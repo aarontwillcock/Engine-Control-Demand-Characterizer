@@ -3,9 +3,10 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: srs.aux
 The style file: abbrv.bst
 Database file #1: ecdc.bib
+Warning--I didn't find a database entry for "biondi"
 You've used 1 entry,
             2118 wiz_defined-function locations,
-            503 strings with 3806 characters,
+            504 strings with 3812 characters,
 and the built_in function-call counts, 343 in all, are:
 = -- 35
 > -- 7
@@ -44,3 +45,4 @@ warning$ -- 0
 while$ -- 5
 width$ -- 2
 write$ -- 13
+(There was 1 warning)
