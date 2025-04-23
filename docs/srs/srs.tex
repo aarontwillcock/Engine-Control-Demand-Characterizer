@@ -107,31 +107,152 @@ For synthesis and data visualization, scope includes:
     \item SI ICE - Spark Ignition ICE - Spark ignition ICE
 \end{itemize}
 
+\subsection{Acknowledgements}
+This work templated from IEEE 830-1984 - IEEE Guide for Software Requirements
+Specifications \cite{ieee_ieee_1984}.
 
 \subsection{References}
+\bibliographystyle{abbrv}
+\bibliography{ecdc}
+
 \subsection{Overview}
+This software should accept as input:
+\begin{enumerate}
+    \item an ICE model,
+    \item an AVR task model,
+    \item an algorithm selection,
+    \item a demand window, and
+    \item a parallelization method selection.
+\end{enumerate}
+For the input above, this software should provide:
+\begin{enumerate}
+    \item the demand bound and
+    \item the calculation runtime.
+\end{enumerate}
+
 \section{General Description}
 \subsection{Product Perspective}
+
+This product is aims to:
+\begin{enumerate}
+    \item implement existing demand characterizations and
+    \item serve as a comparison point for future demand characterizers.
+\end{enumerate}
+
 \subsection{Product Functions}
+
+The primary functions of this software include:
+\begin{enumerate}
+    \item enforcing invariants for ICE and AVR task models,
+    \item viewing and selecting demand characterization algorithms,
+    \item applying the above algorithms to the ICE and AVR models, and
+    \item generating demand bounds.
+\end{enumerate}
+
 \subsection{User Classes and Characteristics}
+
+Only one class of user exists with access to all features.
+
 \subsection{Operating Environment}
+
+This software is expected to run in a unix environment.
+
 \subsection{Design, Implementation, and Environmental Constraints}
+
+\subsubsection{Design Constraints}
+The design should bias towards portability and abstraction.
+
+\subsubsection{Implementation Constraints}
+The implementation is restricted to:
+\begin{enumerate}
+    \item C++14 or newer, and
+    \item a user-defined RAM limit.
+\end{enumerate}
+The C++14 requirement satisfies reviewer desires for a compiled implementation.
+The RAM limit respects execution on standalone vs HPC systems.
+\subsubsection{Environmental Constraints}
+There are no known environmental constraints at this time.
+
 \subsection{Assumptions and Dependencies}
+\subsubsection{Technical}
+This software assumes:
+\begin{enumerate}
+    \item a C++14 compiler is available for the end unix system and
+    \item RAM limits comport with the executing system.
+\end{enumerate}
+\subsubsection{Operational}
+This software assumes the following information is provided:
+\begin{enumerate}
+    \item ICE model parameters (min/max acceleration, min/max speed),
+    \item AVR model parameters (mode count, transition speeds), and
+    \item RAM limits
+\end{enumerate}
+\subsubsection{Business}
+There are no known business assumptions or dependencies at this time.
+\subsubsection{Environmental}
+Uninterrupted system power for the duration of characterization is assumed.
+
 \section{Specific Requirements}
-\subsection{Functional Requirement 1}
-\subsection{Functional Requirement ...}
-\subsection{Functional Requirement Z}
+System function requirements (FR) are enumerated below.
+All FRs use the abbreviation USBAT, "users should be able to" and 
+USBUT, "users should be unable to" brevity.
+\subsection{FR 1: ICE Model CRUD}
+USBAT:
+\begin{enumerate}
+    \item provide ICE max acceleration in UNITS,
+    \item provide ICE min acceleration in UNITS,
+    \item provide ICE symmetric acceleration in UNITS, and
+    \item receive an ICE model data structure containing this information.
+\end{enumerate}
+USBUT:
+\begin{enumerate}
+    \item create invalid ICE models or accelerations.
+\end{enumerate}
+
+\subsection{FR 2: AVR Model CRUD}
+USBAT:
+\begin{enumerate}
+    \item provide AVR task transition speeds in UNITS,
+    \item provide AVR task worst-case execution times (WCETs) in UNITS, and
+    \item receive an AVR task model data structure containing this information.
+\end{enumerate}
+USBUT:
+\begin{enumerate}
+    \item create invalid AVR models, transition speeds, or WCETs.
+\end{enumerate}
+
+\subsection{FR 3: AVRICE Model CRUD}
+USBAT:
+\begin{enumerate}
+    \item provide an ICE model,
+    \item provide AVR model, and
+    \item receive an AVRICE model data structure containing this information.
+\end{enumerate}
+USBUT:
+\begin{enumerate}
+    \item create invalid AVRICE models from incompatible ICE and AVR models.
+\end{enumerate}
+
+\subsection{FR 4: AVRICE Demand Characterization (DC) by ROWL'17}
+\subsection{FR 5: AVRICE DC by ROWL'17: Threaded}
+\subsection{FR 6: AVRICE DC by ROWL'17: Multi-Proc}
+\subsection{FR 7: AVRICE DC by KAVR'18}
+\subsection{FR 8: AVRICE DC by KAVR'18: Threaded}
+\subsection{FR 9: AVRICE DC by KAVR'18: Multi-Proc}
+\subsection{FR 10: AVRICE DC by XACT'24}
+\subsection{FR 11: AVRICE DC by XACT'24: Threaded}
+\subsection{FR 12: AVRICE DC by XACT'24: Multi-Proc}
+\subsection{FR 13: AVRICE DC by APRX'24}
+\subsection{FR 14: AVRICE DC by APRX'24: Threaded}
+\subsection{FR 15: AVRICE DC by APRX'24: Multi-Proc}
+\subsection{FR 16: }
+
 \subsection{External Interface Requirements}
 \subsubsection{User Interfaces}
 \subsubsection{Hardware Interfaces}
+No hardware interfaces are required.
 \subsubsection{Software Interfaces}
 \subsection{Non-Functional Requirements / Performance Requirements}
-\section{Acknowledgements}
-This work templated from IEEE 830-1984 - IEEE Guide for Software Requirements
-Specifications \cite{ieee_ieee_1984}.
-\section{Appendices}
-\bibliographystyle{abbrv}
-\bibliography{ecdc}
 
 
 \end{document}
