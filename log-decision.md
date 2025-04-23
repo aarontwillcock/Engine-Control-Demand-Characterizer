@@ -15,3 +15,6 @@ Outcome:
 ## 2025-04-16:1700 - Reversion of SRS, SDD exclusion
 1. This project intends to demonstrate a full SDLC process, excluding SDD, SRS degrades this objective
 2. SRS and SDD will be generated accordingly
+
+## 2025-04-23:1930 - Delay of PRs by 48 hours
+1. 48 hour delays are required for self-reviewed PRs
