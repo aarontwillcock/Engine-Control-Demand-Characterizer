@@ -1,0 +1,312 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+
+
+\title{Software Requirements Specification: Engine Control Demand Characterizer}
+\date{\today}
+\author{Aaron Willcock}
+
+
+\begin{document}
+\maketitle
+
+
+
+\section{Introduction}
+\subsection{Purpose}
+
+This software aims to:
+\begin{enumerate}
+    \item Define a simplified engine model (e.g., accel, speed parameters),
+    \item define a set of Adaptive Variable-Rate (AVR) tasks as proposed by
+    Biondi et al. \cite{biondi} (e.g., transition speeds, execution times),
+    \item combine the engine model and AVR task to form a real-time AVR-based
+    engine control model, hereafter AEM (AVR Engine Model),
+    \item calculate the maximum demand (see definition CITE)
+    a given AEM can generate, and
+    \item support result synthesis and visualization (e.g. defining experiment
+    classes and parameters, exporting test data into portable files, enabling 
+    comparing algorithm runtimes, etc.)
+\end{enumerate}
+
+The intended use is demand characterization for generated AEMs.
+In furtherance of this intended use, the software also aims to
+enumerate multiple calculation options (e.g., different methods).
+
+\subsection{Scope}
+
+The scope of this software includes three primary areas:
+\begin{enumerate}
+    \item model definition and generation,
+    \item algorithm implementation,
+    \item parallelization support, and
+    \item synthesis and data visualization.
+\end{enumerate}
+
+For model definition and generation, scope includes:
+\begin{enumerate}
+    \item enumeration of existing models and
+    \item randomized generation based on existing models.
+\end{enumerate}
+Excluded items include:
+\begin{enumerate}
+    \item creation of new engine models and
+    \item parameter extension beyond existing models.
+\end{enumerate}
+
+For algorithm implementation, scope includes:
+\begin{enumerate}
+    \item implementation of existing algorithms and
+    \item parameterization of algorithm variations where feasible
+    (e.g., parameterization of constants in existing research).
+\end{enumerate}
+
+Excluded items include:
+\begin{enumerate}
+    \item design and implementation of new algorithms and
+    \item approximation of algorithms no already specified.
+\end{enumerate}
+
+For synthesis and data visualization, scope includes:
+\begin{enumerate}
+    \item definition and implementation of experiment templates,
+    \item parameterization of experiment variables,
+    \item design and implementation of experiment test harness(es) for exporting
+    key performance indicators (e.g., demand calculated, runtime, RAM use, etc.)
+    , and
+    \item definition and use of common key performance data export format (e.g.,
+    CSV enumeration of key performance indicators).
+\end{enumerate}
+\subsection{Definitions, Acronyms, Abbreviations}
+
+\begin{itemize}
+    \item AVR - Adaptive Variable Rate - The Adaptive Variable Rate task model by
+    Biondi et al. CITE
+    \item HPC - High Performance Computing - High performance computing, usually a
+    grid, cluster, or collection of compute devices
+    \item ICE - Internal Combustion Engine - Heat engine using fuel combustion 
+    to cause high-temperature, high-pressure gas expansion for performing work
+    \item SI ICE - Spark Ignition ICE - Spark ignition ICE
+\end{itemize}
+
+\subsection{Acknowledgements}
+This work templated from IEEE 830-1984 - IEEE Guide for Software Requirements
+Specifications \cite{ieee_ieee_1984}.
+
+\subsection{References}
+\bibliographystyle{abbrv}
+\bibliography{ecdc}
+
+\subsection{Overview}
+This software should accept as input:
+\begin{enumerate}
+    \item an ICE model,
+    \item an AVR task model,
+    \item an algorithm selection,
+    \item a demand window.
+\end{enumerate}
+For the input above, this software should provide:
+\begin{enumerate}
+    \item the demand bound and
+    \item the calculation runtime.
+\end{enumerate}
+
+\section{General Description}
+\subsection{Product Perspective}
+
+This product is aims to:
+\begin{enumerate}
+    \item implement existing demand characterizations and
+    \item serve as a comparison point for future demand characterizers.
+\end{enumerate}
+
+\subsection{Product Functions}
+
+The primary functions of this software include:
+\begin{enumerate}
+    \item enforcing invariants for ICE and AVR task models,
+    \item viewing and selecting demand characterization algorithms,
+    \item applying the above algorithms to the ICE and AVR models, and
+    \item generating demand bounds.
+\end{enumerate}
+
+\subsection{User Classes and Characteristics}
+
+Only one class of user exists with access to all features.
+
+\subsection{Operating Environment}
+
+This software is expected to run in a unix environment.
+
+\subsection{Design, Implementation, and Environmental Constraints}
+
+\subsubsection{Design Constraints}
+The design should bias towards portability and abstraction.
+
+\subsubsection{Implementation Constraints}
+The implementation is restricted to:
+\begin{enumerate}
+    \item C++14 or newer, and
+    \item a user-defined RAM limit.
+\end{enumerate}
+The C++14 requirement satisfies reviewer desires for a compiled implementation.
+The RAM limit respects execution on standalone vs HPC systems.
+\subsubsection{Environmental Constraints}
+There are no known environmental constraints at this time.
+
+\subsection{Assumptions and Dependencies}
+\subsubsection{Technical}
+This software assumes:
+\begin{enumerate}
+    \item a C++14 compiler is available for the end unix system and
+    \item RAM limits comport with the executing system.
+\end{enumerate}
+\subsubsection{Operational}
+This software assumes the following information is provided:
+\begin{enumerate}
+    \item ICE model parameters (min/max acceleration, min/max speed),
+    \item AVR model parameters (mode count, transition speeds), and
+    \item RAM limits
+\end{enumerate}
+\subsubsection{Business}
+There are no known business assumptions or dependencies at this time.
+\subsubsection{Environmental}
+Uninterrupted system power for the duration of characterization is assumed.
+
+\section{Specific Requirements}
+System function requirements (FR) are enumerated below.
+All FRs use the abbreviation USBAT, "users should be able to" and 
+USBUT, "users should be unable to" brevity.
+\subsection{FR 1: ICE Model CRUD}
+USBAT:
+\begin{enumerate}
+    \item provide ICE max acceleration in UNITS,
+    \item provide ICE min acceleration in UNITS,
+    \item provide ICE symmetric acceleration in UNITS, and
+    \item receive an ICE model data structure containing this information.
+\end{enumerate}
+USBUT:
+\begin{enumerate}
+    \item create invalid ICE models or accelerations.
+\end{enumerate}
+
+\subsection{FR 2: AVR Model CRUD}
+USBAT:
+\begin{enumerate}
+    \item provide AVR task transition speeds in UNITS,
+    \item provide AVR task worst-case execution times (WCETs) in UNITS, and
+    \item receive an AVR task model data structure containing this information.
+\end{enumerate}
+USBUT:
+\begin{enumerate}
+    \item create invalid AVR models, transition speeds, or WCETs.
+\end{enumerate}
+
+\subsection{FR 3: AVRICE Model CRUD}
+USBAT:
+\begin{enumerate}
+    \item provide an ICE model,
+    \item provide AVR model, and
+    \item receive an AVRICE model data structure containing this information.
+\end{enumerate}
+USBUT:
+\begin{enumerate}
+    \item create invalid AVRICE models from incompatible ICE and AVR models.
+\end{enumerate}
+
+For the following features, an AVRIACE DC algorithm is abbreviated as ADCA.
+\subsection{FR 4: AVRICE Job CRUD}
+USBAT:
+\begin{enumerate}
+    \item provide an AVRICE model,
+    \item provide a ADCA, and
+    \item receive an AVRICE Job containing this information.
+\end{enumerate}
+USBUT:
+\begin{enumerate}
+    \item create invalid AVRICE Jobs from incompatible AVRICE and ADCA models.
+\end{enumerate}
+
+\subsection{FR 5: ADCA implementation of 2017 Refinement of Workload algorithm (ROWL'17)}
+USBAT:
+\begin{enumerate}
+    \item select KAVR'17 as the ADCA as a component of an AVRICE Job.
+\end{enumerate}
+\subsection{FR 6: ADCA implementation of 2018 Knapsack AVR (KAVR'18) CITE}
+USBAT:
+\begin{enumerate}
+    \item select KAVR'18 as the ADCA as a component of an AVRICE Job.
+\end{enumerate}
+\subsection{FR 7: ADCA implementation of 2024 FPTAS Exact (XACT'24) CITE}
+USBAT:
+\begin{enumerate}
+    \item select XACT'24 as the ADCA as a component of an AVRICE Job.
+\end{enumerate}
+\subsection{FR 8: ADCA implementation of 2024 FPTAS APX'24}
+USBAT:
+\begin{enumerate}
+    \item select APX'24 as the ADCA as a component of an AVRICE Job.
+\end{enumerate}
+
+\subsubsection{FR 9: AVRICE Job Executor}
+USBAT:
+\begin{enumerate}
+    \item provide an ordered sequence of AVRICE Jobs for execution and
+    \item receive a corresponding, ordered sequence demand bounds and runtimes.
+\end{enumerate}
+
+
+\subsection{External Interface Requirements}
+
+\subsubsection{User Interfaces}
+No GUI is provided for UI.
+Users interface through user-provided source code.
+
+\subsubsection{Hardware Interfaces}
+No hardware interfaces are required.
+
+\subsubsection{Software Interfaces}
+The library includes the following interfaces:
+
+\begin{enumerate}
+    \item ICE Model CRUD API,
+    \item AVR Model CRUD API,
+    \item AVRICE Model CRUD API,
+    \item AVRICE Job CRUD API,
+    \item AVRICE Executor Service API.
+\end{enumerate}
+
+\subsection{Non-Functional Requirements / Performance Requirements}
+System non-functional requirements (FR) are enumerated below.
+All FRs use the abbreviation SSB, "the system should be" and 
+SSNB, "the system should not be", for brevity.
+
+\subsubsection{NF1: Modularity}
+SSB:
+\begin{enumerate}
+    \item distributed across single-purpose classes, and
+    \item implemented with single-purpose, standalone services.
+\end{enumerate}
+\subsubsection{Availability}
+SSB:
+\begin{enumerate}
+    \item able to sustain failed jobs without compromising other jobs,
+    \item able to provide partial results for failed jobs,
+    \item able to restrict jobs exceeding user-defined response times.
+\end{enumerate}
+\subsubsection{Concurrency}
+SSB:
+\begin{enumerate}
+    \item able to launch AVRICE Jobs as individual processes,
+    \item able to respect user-defined process limits.
+\end{enumerate}
+\subsubsection{Reliability}
+SSB:
+\begin{enumerate}
+    \item able to gracefully handle invalid user inputs to any module and
+    \item respectful of user-defined resource limits.
+\end{enumerate}
+
+\end{document}
