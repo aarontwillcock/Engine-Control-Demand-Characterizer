@@ -32,12 +32,8 @@ This software aims to:
 \end{enumerate}
 
 The intended use is demand characterization for generated AEMs.
-In furtherance of this intended use, the software also aims to:
-\begin{enumerate}
-    \item enumerate multiple calculation options (e.g., different methods),
-    \item allow algorithm parallelization (where possible),
-    \item allow approximation (where possible).
-\end{enumerate}
+In furtherance of this intended use, the software also aims to
+enumerate multiple calculation options (e.g., different methods).
 
 \subsection{Scope}
 
@@ -71,18 +67,6 @@ Excluded items include:
 \begin{enumerate}
     \item design and implementation of new algorithms and
     \item approximation of algorithms no already specified.
-\end{enumerate}
-
-For parallelization support, scope includes:
-\begin{enumerate}
-    \item multi-threaded implementations of existing algorithms and
-    \item multi-core implementations of existing algorithms.
-\end{enumerate}
-
-Excluded items includes:
-\begin{enumerate}
-    \item design or implementation of new parallelization techniques and
-    \item scripting support for non-SLURM HPC grids.
 \end{enumerate}
 
 For synthesis and data visualization, scope includes:
@@ -121,8 +105,7 @@ This software should accept as input:
     \item an ICE model,
     \item an AVR task model,
     \item an algorithm selection,
-    \item a demand window, and
-    \item a parallelization method selection.
+    \item a demand window.
 \end{enumerate}
 For the input above, this software should provide:
 \begin{enumerate}
@@ -233,26 +216,97 @@ USBUT:
     \item create invalid AVRICE models from incompatible ICE and AVR models.
 \end{enumerate}
 
-\subsection{FR 4: AVRICE Demand Characterization (DC) by ROWL'17}
-\subsection{FR 5: AVRICE DC by ROWL'17: Threaded}
-\subsection{FR 6: AVRICE DC by ROWL'17: Multi-Proc}
-\subsection{FR 7: AVRICE DC by KAVR'18}
-\subsection{FR 8: AVRICE DC by KAVR'18: Threaded}
-\subsection{FR 9: AVRICE DC by KAVR'18: Multi-Proc}
-\subsection{FR 10: AVRICE DC by XACT'24}
-\subsection{FR 11: AVRICE DC by XACT'24: Threaded}
-\subsection{FR 12: AVRICE DC by XACT'24: Multi-Proc}
-\subsection{FR 13: AVRICE DC by APRX'24}
-\subsection{FR 14: AVRICE DC by APRX'24: Threaded}
-\subsection{FR 15: AVRICE DC by APRX'24: Multi-Proc}
-\subsection{FR 16: }
+For the following features, an AVRIACE DC algorithm is abbreviated as ADCA.
+\subsection{FR 4: AVRICE Job CRUD}
+USBAT:
+\begin{enumerate}
+    \item provide an AVRICE model,
+    \item provide a ADCA, and
+    \item receive an AVRICE Job containing this information.
+\end{enumerate}
+USBUT:
+\begin{enumerate}
+    \item create invalid AVRICE Jobs from incompatible AVRICE and ADCA models.
+\end{enumerate}
+
+\subsection{FR 5: ADCA implementation of 2017 Refinement of Workload algorithm (ROWL'17)}
+USBAT:
+\begin{enumerate}
+    \item select KAVR'17 as the ADCA as a component of an AVRICE Job.
+\end{enumerate}
+\subsection{FR 6: ADCA implementation of 2018 Knapsack AVR (KAVR'18) CITE}
+USBAT:
+\begin{enumerate}
+    \item select KAVR'18 as the ADCA as a component of an AVRICE Job.
+\end{enumerate}
+\subsection{FR 7: ADCA implementation of 2024 FPTAS Exact (XACT'24) CITE}
+USBAT:
+\begin{enumerate}
+    \item select XACT'24 as the ADCA as a component of an AVRICE Job.
+\end{enumerate}
+\subsection{FR 8: ADCA implementation of 2024 FPTAS APX'24}
+USBAT:
+\begin{enumerate}
+    \item select APX'24 as the ADCA as a component of an AVRICE Job.
+\end{enumerate}
+
+\subsubsection{FR 9: AVRICE Job Executor}
+USBAT:
+\begin{enumerate}
+    \item provide an ordered sequence of AVRICE Jobs for execution and
+    \item receive a corresponding, ordered sequence demand bounds and runtimes.
+\end{enumerate}
+
 
 \subsection{External Interface Requirements}
+
 \subsubsection{User Interfaces}
+No GUI is provided for UI.
+Users interface through user-provided source code.
+
 \subsubsection{Hardware Interfaces}
 No hardware interfaces are required.
-\subsubsection{Software Interfaces}
-\subsection{Non-Functional Requirements / Performance Requirements}
 
+\subsubsection{Software Interfaces}
+The library includes the following interfaces:
+
+\begin{enumerate}
+    \item ICE Model CRUD API,
+    \item AVR Model CRUD API,
+    \item AVRICE Model CRUD API,
+    \item AVRICE Job CRUD API,
+    \item AVRICE Executor Service API.
+\end{enumerate}
+
+\subsection{Non-Functional Requirements / Performance Requirements}
+System non-functional requirements (FR) are enumerated below.
+All FRs use the abbreviation SSB, "the system should be" and 
+SSNB, "the system should not be", for brevity.
+
+\subsubsection{NF1: Modularity}
+SSB:
+\begin{enumerate}
+    \item distributed across single-purpose classes, and
+    \item implemented with single-purpose, standalone services.
+\end{enumerate}
+\subsubsection{Availability}
+SSB:
+\begin{enumerate}
+    \item able to sustain failed jobs without compromising other jobs,
+    \item able to provide partial results for failed jobs,
+    \item able to restrict jobs exceeding user-defined response times.
+\end{enumerate}
+\subsubsection{Concurrency}
+SSB:
+\begin{enumerate}
+    \item able to launch AVRICE Jobs as individual processes,
+    \item able to respect user-defined process limits.
+\end{enumerate}
+\subsubsection{Reliability}
+SSB:
+\begin{enumerate}
+    \item able to gracefully handle invalid user inputs to any module and
+    \item respectful of user-defined resource limits.
+\end{enumerate}
 
 \end{document}
