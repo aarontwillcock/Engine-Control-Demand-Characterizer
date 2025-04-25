@@ -1,0 +1,47 @@
+@startuml
+
+title Relationships - Class Diagram
+
+class ICE{
+  -Int min_speed_rpm
+  -Int max_speed_rpm
+  -Int min_accel_rpm2
+  -Int max_accel_rpm2
+  -Int symmetric_accel_rpm2
+  -Bool symmetry_allowed
+  +ICE()
+  +Int setMaxSpeed(const Int & speed_rpm)
+  +Int setMinSpeed(const Int & speed_rpm)
+  +Int setMaxAccel(const Int & accel_rpm2)
+  +Int setMinAccel(const Int & accel_rpm2)
+  +Int setSymmetricAccel(const Int & accel_rpm2)
+  +Int setSymmetricState(const Bool enable_symmetry)
+  +Int * getSpeeds()
+  +Int * getAccels()
+  +Bool getSymmetryState()
+}
+
+class AVR{
+  -Int[] WCETs_us
+  -Int[] transitionSpeeds_rpm
+  +AVR()
+  +Int setWCETs_us(const Int[] & WCETs_us)
+  +Int setTransitionSpeeds_rpm(const Int[] & transitionSpeeds_rpm)
+  +Int * getWCETs_us()
+  +Int * getTransitionSpeeds_rpm()
+}
+
+class AVRICE{
+  -AVR m_task
+  -ICE m_ice
+  +AVRICE()
+  +AVRICE(AVR task, ICE eng)
+  +AVR * getAVR()
+  +ICE * getICE()
+  +Int setAvr(const AVR & task)
+  +Int setIce(const ICE & eng)
+}
+
+AVRICE *-- ICE
+AVRICE *-- AVR
+@enduml
