@@ -15,9 +15,9 @@ class ICE{
   +Int setMaxAccel(const Int & accel_rpm2)
   +Int setMinAccel(const Int & accel_rpm2)
   +Int setSymmetricAccel(const Int & accel_rpm2)
-  +Int setSymmetricState(const Bool enable_symmetry)
-  +Int * getSpeeds()
-  +Int * getAccels()
+  +void setSymmetricState(const Bool enable_symmetry)
+  +Int getSpeeds()
+  +Int getAccels()
   +Bool getSymmetryState()
 }
 
@@ -38,8 +38,8 @@ class AVRICE{
   +AVRICE(AVR task, ICE eng)
   +AVR * getAVR()
   +ICE * getICE()
-  +Int setAvr(const AVR & task)
-  +Int setIce(const ICE & eng)
+  +Int setAvr(AVR task)
+  +Int setIce(ICE eng)
 }
 
 AVRICE *-- ICE
