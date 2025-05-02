@@ -1,0 +1,49 @@
+participant Participant as Foo
+control     Control     as Foo3
+entity      Entity      as Foo4
+database    Database    as Foo5
+collections Collections as Foo6
+Foo -> Foo1 : To actor 
+Foo -> Foo2 : To boundary
+Foo -> Foo3 : To control
+Foo -> Foo4 : To entity
+Foo -> Foo5 : To database
+Foo -> Foo6 : To collections
+Foo -> Foo7: To queue
+@startuml
+actor          User as usr
+participant    "AVR \n Factory" as avr
+participant    "ICE \n Factory" as ice
+participant    "AVRICE \n Factory" as avrice
+participant    "AVRICE Job \n Factory" as job
+box "Admission Control / Processing" #LightBlue
+participant    "AVRICE Job \n Executer" as exe
+queue          "Job \n Queue" as q
+end box
+collections    "AVR DC Algs" as algs
+collections    "Output data files" as db
+
+usr -> avr : transition speeds, WCETs
+avr -> usr : AVR obj
+usr -> ice : min/max speeds & accels
+ice -> usr : ICE obj
+usr -> avrice : AVR, ICE objects
+avrice -> usr : AVRICE object
+usr -> job : ADCA enum, AVRICE object
+job -> usr : AVRICE Job object
+usr -> exe : AVRICE Job object(s)
+exe -> q : AVRICE Job object(s)
+loop while queue not empty
+q -> exe : AVRICE Job object
+exe -> algs : ADCA Enum
+algs -> exe : ADCA Function
+exe -> exe : execute
+exe -> db : AVRICE Job object, demand bound, runtime
+end 
+usr -> db : open file / view
+db -> usr : AVRICE Job data (parameters, demand bound, runtime)
+
+
+
+
+@enduml
